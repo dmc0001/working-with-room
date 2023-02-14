@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerAdapter(var postsList: ArrayList<Post>) :
+class RecyclerAdapter(var postsList: List<Post>) :
     RecyclerView.Adapter<RecyclerAdapter.PostViewHolder>() {
 
     class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -26,8 +26,8 @@ class RecyclerAdapter(var postsList: ArrayList<Post>) :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setList(posts: ArrayList<Post>){
-        postsList = posts
+    fun setList(posts: List<Post>){
+        this.postsList = posts
         notifyDataSetChanged()
     }
 

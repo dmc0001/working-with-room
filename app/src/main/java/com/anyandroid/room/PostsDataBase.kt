@@ -9,25 +9,31 @@ import androidx.room.RoomDatabase
 @Database(entities = [Post::class], version = 1)
 abstract class PostsDataBase : RoomDatabase() {
 
-    abstract val postsDao : PostsDao
+    abstract val postsDao: PostsDao
 
     companion object {
-        @Volatile
         private var instance: PostsDataBase? = null
 
         fun getInstance(context: Context): PostsDataBase {
-            return instance ?: synchronized(this) {
-                instance ?: Room.databaseBuilder(
-                    context.applicationContext,
-                    PostsDataBase::class.java,
-                    "posts_database"
-                ).fallbackToDestructiveMigration()
-                    .build().also { instance = it }
+            if (instance == null) {
+                instance =
+                    Room.databaseBuilder(context, PostsDataBase::class.java, "posts_database")
+                        .fallbackToDestructiveMigration()
+                        .build()
             }
+            return instance as PostsDataBase
+
         }
     }
 }
 
 
-
+/*return instance ?: synchronized(this) {
+               instance ?: Room.databaseBuilder(
+                   context.applicationContext,
+                   PostsDataBase::class.java,
+                   "posts_database"
+               ).fallbackToDestructiveMigration()
+                   .build().also { instance = it }
+           }*/
 
