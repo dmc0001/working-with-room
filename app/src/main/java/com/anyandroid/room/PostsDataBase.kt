@@ -12,28 +12,25 @@ abstract class PostsDataBase : RoomDatabase() {
     abstract val postsDao: PostsDao
 
     companion object {
-        private var instance: PostsDataBase? = null
+
+        @Volatile
+        private var INSTANCE: PostsDataBase? = null
 
         fun getInstance(context: Context): PostsDataBase {
-            if (instance == null) {
-                instance =
-                    Room.databaseBuilder(context, PostsDataBase::class.java, "posts_database")
-                        .fallbackToDestructiveMigration()
-                        .build()
+            synchronized(this) {
+                var instance = INSTANCE
+                if (instance == null) {
+                    instance = Room.databaseBuilder(
+                        context.applicationContext,
+                        PostsDataBase::class.java,
+                        "posts_database"
+                    ).build()
+                    INSTANCE = instance
+                }
+                return instance
             }
-            return instance as PostsDataBase
-
         }
     }
 }
 
-
-/*return instance ?: synchronized(this) {
-               instance ?: Room.databaseBuilder(
-                   context.applicationContext,
-                   PostsDataBase::class.java,
-                   "posts_database"
-               ).fallbackToDestructiveMigration()
-                   .build().also { instance = it }
-           }*/
 

@@ -35,86 +35,59 @@ class MainActivity : AppCompatActivity() {
         val postsDataBase = PostsDataBase.getInstance(this)
 
         insertButton.setOnClickListener {
+            Toast.makeText(this, "Inserting", Toast.LENGTH_SHORT).show()
             postsDataBase.postsDao.insertPost(
                 Post(
                     0,
                     editTextTitle.text.toString(),
-                    editTextBody.text.toString(),
+                    editTextBody.text.toString()
                 )
             )
                 .subscribeOn(Schedulers.computation())
                 .subscribe(object : CompletableObserver {
                     override fun onSubscribe(d: Disposable) {
-                        TODO("Not yet implemented")
+                        Log.d(TAG, "dmc 69 onSubscribe: ")
                     }
 
                     override fun onComplete() {
-                        Toast.makeText(this@MainActivity, "Inserted", Toast.LENGTH_SHORT).show()
+                        Log.d(TAG, "dmc 69 onComplete: ")
                     }
 
                     override fun onError(e: Throwable) {
-                        Toast.makeText(this@MainActivity, "Error", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "Error ${e.message}", Toast.LENGTH_SHORT)
+                            .show()
+                        Log.d(TAG, "dmc 69 onError: ${e.message} ")
                     }
                 })
         }
+
         getButton.setOnClickListener {
+            Toast.makeText(this, "Getting", Toast.LENGTH_SHORT).show()
             postsDataBase.postsDao.getPosts()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<List<Post>> {
                     override fun onSubscribe(d: Disposable) {
-                        TODO("Not yet implemented")
+                        Log.d(TAG, "dmc 69 onSubscribe: ")
                     }
 
                     override fun onSuccess(t: List<Post>) {
-
                         postsAdapter.setList(t)
                         postsAdapter.notifyDataSetChanged()
                         Log.d(TAG, "dmc 69 onSuccess: setList ")
                     }
 
                     override fun onError(e: Throwable) {
-                        Toast.makeText(this@MainActivity, "Error", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "Error ${e.message}", Toast.LENGTH_SHORT)
+                            .show()
+                        Log.d(TAG, "dmc 69 onError: ${e.message} ")
                     }
                 })
         }
-
-      /*  postsDataBase.postsDao.insertPost(Post(0, "Title", "Body"))
-            .subscribeOn(Schedulers.computation())
-            .subscribe(object : CompletableObserver {
-                override fun onSubscribe(d: Disposable) {
-                    TODO("Not yet implemented")
-                }
-
-                override fun onComplete() {
-                    TODO("Not yet implemented")
-                }
-
-                override fun onError(e: Throwable) {
-                    TODO("Not yet implemented")
-                }
-            })
-
-        postsDataBase.postsDao.getPosts()
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : SingleObserver<List<Post>> {
-                override fun onSubscribe(d: Disposable) {
-                    TODO("Not yet implemented")
-                }
-
-                override fun onSuccess(t: List<Post>) {
-                    postsAdapter.setList(t)
-                    postsAdapter.notifyDataSetChanged()
-                    Log.d(TAG, "dmc 69 onSuccess: setList ")
-                }
-
-                override fun onError(e: Throwable) {
-                    Toast.makeText(this@MainActivity, "Error", Toast.LENGTH_SHORT).show()
-                }
-            })*/
+      //delete from recycler view
 
     }
+
 }
 
 
