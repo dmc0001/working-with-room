@@ -18,7 +18,7 @@ import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnItemClickListener {
     private lateinit var postsRecyclerView: RecyclerView
     private lateinit var insertButton: Button
     private lateinit var getButton: Button
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         insertButton = findViewById(R.id.button)
         getButton = findViewById(R.id.button2)
         postsRecyclerView = findViewById(R.id.recyclerView)
-        postsAdapter = RecyclerAdapter(emptyList())
+        postsAdapter = RecyclerAdapter(emptyList(), this)
         postsRecyclerView.layoutManager = LinearLayoutManager(this)
         postsRecyclerView.adapter = postsAdapter
         postsDataBase = PostsDataBase.getInstance(this)
@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         getButton.setOnClickListener {
             getData()
         }
+
     }
 
     @SuppressLint("ObsoleteSdkInt")
@@ -105,6 +106,28 @@ class MainActivity : AppCompatActivity() {
                 }
             })
 
+    }
+
+    override fun onPostClick(position: Int) {
+        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDeleteClick(position: Int) {
+        postsDataBase.postsDao.deletePost(postsAdapter.postsList[position])
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CompletableObserver {
+                override fun onSubscribe(d: Disposable) {}
+
+                override fun onComplete() {
+                    Toast.makeText(this@MainActivity, "Deleted", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onError(e: Throwable) {
+                    Toast.makeText(this@MainActivity, "Error", Toast.LENGTH_SHORT).show()
+                }
+            })
+        getData()
     }
 }
 

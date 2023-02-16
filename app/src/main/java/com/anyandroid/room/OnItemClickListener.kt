@@ -1,5 +1,6 @@
 package com.anyandroid.room
 
 interface OnItemClickListener {
-    fun onItemClick(position: Int)
+    fun onPostClick(position: Int)
+    fun onDeleteClick(position: Int)
 }
