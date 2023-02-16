@@ -32,6 +32,7 @@ class RecyclerAdapter(var postsList: List<Post>) :
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
+
         holder.title.text = postsList[position].title
         holder.body.text = postsList[position].body
     }

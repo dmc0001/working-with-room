@@ -13,4 +13,6 @@ interface PostsDao {
     fun getPosts():Single<List<Post>>
     @Delete
     fun deletePost(post: Post): Completable
+    @Update
+    fun updatePost(post: Post): Completable
 }
