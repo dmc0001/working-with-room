@@ -32,10 +32,16 @@ class MainActivity : AppCompatActivity() {
         val postsAdapter = RecyclerAdapter(emptyList())
         postsRecyclerView.layoutManager = LinearLayoutManager(this)
         postsRecyclerView.adapter = postsAdapter
-        //val postsDataBase = PostsDataBase.getInstance(this)
+        val postsDataBase = PostsDataBase.getInstance(this)
 
-       /* insertButton.setOnClickListener {
-            postsDataBase.postsDao.insertPost(Post(0, editTextTitle.text.toString(), editTextBody.text.toString()))
+        insertButton.setOnClickListener {
+            postsDataBase.postsDao.insertPost(
+                Post(
+                    0,
+                    editTextTitle.text.toString(),
+                    editTextBody.text.toString(),
+                )
+            )
                 .subscribeOn(Schedulers.computation())
                 .subscribe(object : CompletableObserver {
                     override fun onSubscribe(d: Disposable) {
@@ -63,6 +69,7 @@ class MainActivity : AppCompatActivity() {
                     override fun onSuccess(t: List<Post>) {
 
                         postsAdapter.setList(t)
+                        postsAdapter.notifyDataSetChanged()
                         Log.d(TAG, "dmc 69 onSuccess: setList ")
                     }
 
@@ -70,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this@MainActivity, "Error", Toast.LENGTH_SHORT).show()
                     }
                 })
-        }*/
+        }
 
       /*  postsDataBase.postsDao.insertPost(Post(0, "Title", "Body"))
             .subscribeOn(Schedulers.computation())
