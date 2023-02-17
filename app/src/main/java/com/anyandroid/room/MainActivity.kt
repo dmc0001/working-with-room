@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
     private fun insertData() {
         postsDataBase.postsDao.insertPost(
             Post(
-                0,
+                User( "dmc",1 ),
                 editTextTitle.text.toString(),
                 editTextBody.text.toString()
             )
